@@ -1,0 +1,43 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int a[1001][1001];
+stack<int> st;
+set<int> s[1001];
+vector<int> EC;
+int n,u;
+void Input(){
+    cin>>n>>u;
+    for(int i =1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            cin>>a[i][j];
+            if(a[i][j]){
+                s[i].insert(j);
+            }
+        }
+    }
+}
+void Euler(int u){
+    st.push(u);
+    while(!st.empty()){
+        int x = st.top();
+        if(s[x].size()!=0){
+            int y = *s[x].begin();
+            st.push(y);
+            s[x].erase(y);
+            s[y].erase(x);
+        }
+        else{
+            EC.push_back(x);
+            st.pop();
+        }
+    }
+    reverse(begin(EC),end(EC));
+    for(int x:EC) cout<<x<<" ";
+    cout<<endl;
+}
+int main(){
+    Input();
+    Euler(u);
+    return 0;
+}

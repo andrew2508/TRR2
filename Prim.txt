@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool used[15];
+int a[100][100];
+int n, u;
+int d;
+vector<pair<int,int>> adj[1001];
+struct canh{
+  int x, y, w;  
+};
+void Input(){
+    cin>>n>>u;
+    for(int i =1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            cin>>a[i][j];
+            if(a[i][j]!=0){
+                adj[i].push_back({j,a[i][j]});
+            }
+        }
+    }
+    memset(used,false,sizeof(used));
+}
+void Prim(int u){
+    used[u] = true;
+    d=0;
+    vector<canh> MST;
+    while(MST.size()<n-1){
+        int X, Y;
+        int min_w = INT_MAX;
+        for(int i =1;i<=n;i++){
+            if(used[i]){
+                for(pair<int,int> it:adj[i]){
+                    int j =it.first;
+                    int trongso = it.second;
+                    if(!used[j]&&trongso<min_w){
+                        X = j; min_w = trongso;
+                        Y = i;
+                    }
+                }
+            }
+        }
+        MST.push_back({X,Y,min_w});
+        used[X] = true;
+        d+=min_w;
+    }
+    cout<<"dH = "<<d<<endl;
+    for(canh ed:MST){
+        if(ed.x>ed.y) swap(ed.x,ed.y);
+        cout<<ed.x<<" "<<ed.y<<endl;
+    }
+}
+int main(){
+    Input();
+    Prim(u);
+    return 0;
+}

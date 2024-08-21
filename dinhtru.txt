@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> vt[1001];
+bool check[1001];
+int a[1001][1001];
+int n;
+void Input(){
+    cin>>n;
+    for(int i =1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            cin>>a[i][j];
+            if(a[i][j]){
+                vt[i].push_back(j);
+            }
+        }
+    }
+    memset(check,false,sizeof(check));
+}
+void DFS(int u){
+    check[u] = true;
+    for(int x:vt[u]){
+        if(!check[x]){
+            DFS(x);
+        }
+    }
+}
+void CanhDinh(){
+    int cnt = 0;
+    for(int i=1;i<=n;i++){
+        if(!check[i]){
+            cnt++;
+            DFS(i);
+        }
+    }
+    for(int i=1;i<=n;i++){
+        memset(check,false,sizeof(check));
+        check[i] = true;
+        int dem =0;
+        for(int j=1;j<=n;j++){
+            if(!check[j]){
+                dem++;
+                DFS(j);
+            }
+        }
+        if(dem>cnt){
+            cout<<i<<" ";
+        }
+    }
+    cout<<endl;
+}
+int main(){
+    Input();
+    CanhDinh();
+}

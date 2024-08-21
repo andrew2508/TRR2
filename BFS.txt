@@ -1,0 +1,42 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int n;
+int a[101][101];
+bool check[101];
+vector<int> vt[101];
+void BFS(int u){
+    cin>>n;
+    for(int i =1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+                cin>>a[i][j];
+        }
+    }
+    memset(check,false,sizeof(check));
+    for(int i =1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            if(a[i][j]){
+                vt[i].push_back(j);
+            }
+        }
+    }
+    queue<int> qe;
+    qe.push(u);
+    check[u] = true;
+    while(!qe.empty()){
+        int res = qe.front();
+        qe.pop();
+        cout<<res<<" ";
+        for(int &x:vt[res]){
+            if(!check[x]){
+                qe.push(x);
+                check[x] = true;
+            }
+        }
+    }
+}
+int main(){
+    BFS(1);
+    cout<<endl;
+    return 0;
+}

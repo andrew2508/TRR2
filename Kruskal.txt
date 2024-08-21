@@ -1,0 +1,76 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct edge{
+    int u, v, w;
+};
+int n;
+int a[20][20];
+vector<edge> canh;
+int parent[101], sz[101];
+void Input(){
+    cin>>n;
+    for(int i=1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            cin>>a[i][j];
+        }
+    }
+    for(int i=1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            if(a[i][j]!=0&&i<j){
+                edge e;
+                e.u = i; e.v = j; e.w = a[i][j];
+                canh.push_back(e);
+            }
+        }
+    }
+}
+void make_set(){
+    for(int i =1;i<=n;i++){
+        parent[i] = i;
+        sz[i] = 1;
+    }
+}
+int find(int v){
+    if(v==parent[v]) return v;
+    else return v = find(parent[v]);
+}
+bool Union(int a, int b){
+    a = find(a);
+    b = find(b);
+    if(a==b) return false;
+    if(sz[a]<sz[b]) swap(a,b);
+    parent[b] = a;
+    sz[a]+sz[b];
+    return true;
+}
+bool cmp(edge a, edge b){
+    if(a.w!=b.w) return a.w<b.w;
+    else return a.u<b.u;
+}
+bool cmp2(edge a, edge b){
+    return a.u<b.u;
+}
+void Kruskal(){
+    vector<edge> mst;
+    sort(canh.begin(),canh.end(),cmp);
+    int d = 0;
+    for(int i = 0;i<canh.size();i++){
+        if(mst.size()==n-1) break;
+        edge e = canh[i];
+        if(Union(e.u,e.v)){
+            mst.push_back(e);
+            d+=e.w;
+        }
+    }
+    cout<<"dH = "<<d<<endl;
+    for(edge s:mst){
+        cout<<s.u<<" "<<s.v<<endl;
+    }
+}
+int main(){
+    Input();
+    make_set();
+    Kruskal();
+    return 0;
+}

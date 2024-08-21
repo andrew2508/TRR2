@@ -1,0 +1,74 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+const long long INF = 1e9;
+int n, s;
+vector<pair<int,int>> adj[1001];
+int pre[1001];
+int a[1001][1001];
+void Input(){
+	for(int i =1;i<=n;i++){
+		for(int j =1;j<=n;j++){
+			cin>>a[i][j];
+			if(a[i][j]!=0){
+				adj[i].push_back({j,a[i][j]});
+			}
+		}
+	}
+}
+void BFord(int s, int t){
+	vector<ll> d(n+1,INF);
+	d[s] = 0;
+	pre[s] = s;
+	for(auto res:adj[s]){
+		int v = res.first;
+		int w = res.second;
+		if(d[v]>d[s]+w){
+			d[v] = d[s]+w;
+			pre[v] = s;
+		}
+	}
+	for(int i =1;i<=n;i++){
+		for(int u =1;u<=n;u++){
+		for(auto res:adj[u]){
+			int v = res.first;
+			int w = res.second;
+			if(d[v]>d[u]+w){
+				d[v] = d[u]+w;
+				pre[v] = u;
+			}
+		}
+	}
+	}		
+	vector<int> path;
+	if(d[t]<INF){
+		cout<<"K/c "<<s<<" -> "<<t<<" = "<<d[t]<<";        ";
+		cout<<t;
+		while(1){
+			path.push_back(t);
+			if(t==s) break;
+			t = pre[t];
+		}
+		for(int i=1;i<path.size();i++){
+			cout<<" <- "<<path[i];
+		}
+		cout<<endl;
+	}
+	else{
+		cout<<"K/c "<<s<<" -> "<<t<<" = INF;"<<endl;
+	} 
+}
+int main(){
+	cin>>n>>s;
+	Input();
+	for(int i =1;i<=n;i++){
+		if(i==s){
+			cout<<"K/c "<<i<<" -> "<<s<<" = "<<0<<";        ";
+			cout<<s<<" <- "<<i<<endl;
+		}
+		else
+		BFord(s,i);
+	}
+	return 0;
+}

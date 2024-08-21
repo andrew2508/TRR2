@@ -1,0 +1,60 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+set<int> st[1001];
+int n, k;
+int a[1001][1001];
+bool visited[1001];
+int HC[1001];
+int degree[1001];
+void Input(){
+    for(int i=1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            cin>>a[i][j];
+            if(a[i][j]){
+                st[i].insert(j);
+                degree[i]++;
+            }
+        }
+    }
+}
+bool check(){
+    for(int i =1;i<=n;i++){
+        if(degree[i]<n/2) return false;
+    }
+    return true;
+}
+void Hamilton_cycle(int pos, int u){
+    visited[u] = true;
+    HC[pos] = u;
+    if(pos==n){
+        if(st[u].find(HC[1])!=st[u].end()){
+            HC[++pos] = HC[1];
+            for(int i =1;i<=pos;i++){
+                cout<<HC[i]<<" ";
+            }
+            cout<<endl;
+        }
+    }
+    for(int v:st[u]){
+        if(!visited[v]){
+            Hamilton_cycle(pos+1,v);
+            visited[v] = false;
+        }
+    }
+    visited[u] = false;
+}
+int main(){
+    cin>>n>>k;
+    Input();
+    if(check()){
+        Hamilton_cycle(1,k);
+    }
+    return 0;
+}
+
+
+
+
+
+

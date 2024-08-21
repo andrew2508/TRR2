@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> vt[101];
+int a[101][101];
+bool check[20];
+int n;
+void input(){
+    for(int i = 0;i<n;i++){
+        for(int j = 0;j<n;j++){
+            if(a[i][j]){
+                vt[i+1].push_back(j+1);
+            }    
+        }
+    } 
+    memset(check,false,sizeof(check));
+}
+void DFS(int u){
+    cout<<u<<" ";
+    check[u] = true;
+    for(int x:vt[u]){
+        if(!check[x]){
+            DFS(x);
+        }
+    }
+}
+int main(){
+    cin>>n;
+    for(int i =0;i<n;i++){
+        for(int j = 0;j<n;j++){
+            cin>>a[i][j];
+        }
+    }
+    input();
+    DFS(1);
+    cout<<endl;
+    return 0;
+}
